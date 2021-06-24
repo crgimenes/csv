@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# This directory is for you to place your test CSV files 
+# that should not be synced in git because they contain 
+# confidential or non-public information.
+nonfree/
+
+
