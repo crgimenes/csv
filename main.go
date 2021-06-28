@@ -13,6 +13,7 @@ import (
 type config struct {
 	InputFile  string `json:"input_file" cfg:"i" cfgDefault:"-"`
 	OutputFile string `json:"output_file" cfg:"o" cfgDefault:"-"`
+	Comma      string `json:"comma" cfg:"comma" cfgDefault:","`
 }
 
 func main() {
