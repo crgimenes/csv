@@ -16,6 +16,13 @@ type config struct {
 	Comma      string `json:"comma" cfg:"comma" cfgDefault:","`
 }
 
+func closer(c io.Closer) {
+	err := c.Close()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func main() {
 	cfg := config{}
 	err := goconfig.Parse(&cfg)
@@ -32,7 +39,7 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		defer csvFile.Close()
+		defer closer(csvFile)
 	}
 
 	r := csv.NewReader(csvFile)
@@ -65,7 +72,11 @@ func main() {
 			i++
 			continue
 		}
-		writer.WriteString(fmt.Sprintf("%s = %s\n", h[0], record[0]))
+		_, err = writer.WriteString(fmt.Sprintf("%s = %s\n", h[0], record[0]))
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 	writer.Flush()
 }
