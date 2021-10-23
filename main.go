@@ -78,5 +78,8 @@ func main() {
 			return
 		}
 	}
-	writer.Flush()
+	err = writer.Flush()
+	if err != nil {
+		panic(err)
+	}
 }
