@@ -25,6 +25,7 @@ func closer(c io.Closer) {
 
 func main() {
 	cfg := config{}
+
 	err := goconfig.Parse(&cfg)
 	if err != nil {
 		fmt.Println(err)
@@ -39,6 +40,7 @@ func main() {
 			fmt.Println(err)
 			return
 		}
+
 		defer closer(csvFile)
 	}
 
@@ -54,30 +56,38 @@ func main() {
 			return
 		}
 	}
+
 	writer := bufio.NewWriter(outFile)
 
 	h := []string{}
 	i := 0
+
 	for {
 		record, err := r.Read()
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
+
 			fmt.Println(err)
+
 			return
 		}
+
 		if i == 0 {
 			h = append(h, record[0])
 			i++
+
 			continue
 		}
+
 		_, err = writer.WriteString(fmt.Sprintf("%s = %s\n", h[0], record[0]))
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 	}
+
 	err = writer.Flush()
 	if err != nil {
 		panic(err)
